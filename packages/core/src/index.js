@@ -777,15 +777,15 @@ class Jimp extends EventEmitter {
   }
 }
 
-export function addConstants(constants, jimpInstance = Jimp) {
+export function addConstants(constants) {
   Object.entries(constants).forEach(([name, value]) => {
-    jimpInstance[name] = value;
+    Jimp[name] = value;
   });
 }
 
-export function addJimpMethods(methods, jimpInstance = Jimp) {
+export function addJimpMethods(methods) {
   Object.entries(methods).forEach(([name, value]) => {
-    jimpInstance.prototype[name] = value;
+    Jimp.prototype[name] = value;
   });
 }
 

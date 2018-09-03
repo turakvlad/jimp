@@ -1,13 +1,9 @@
-import { Jimp, getTestDir, isWeb } from '@jimp/test-utils';
-import configure from '@jimp/custom';
-import plugins from '@jimp/plugins';
-
-const jimp = configure({ plugins: [plugins] }, Jimp);
+import { Jimp, getTestDir, isWeb } from './test-helper';
 
 describe('Exif', function() {
   this.timeout(15000);
 
-  const imagesDir = getTestDir(__dirname) + '/images/exif-orientation';
+  const imagesDir = getTestDir() + '/samples/exif-orientation';
 
   let imgs;
   let firstLandscapeImg;
@@ -17,9 +13,9 @@ describe('Exif', function() {
     imgs = [];
     let i;
     for (i = 1; i <= 8; i++)
-      imgs.push(jimp.read(imagesDir + '/Landscape_' + i + '.jpg'));
+      imgs.push(Jimp.read(imagesDir + '/Landscape_' + i + '.jpg'));
     for (i = 1; i <= 8; i++)
-      imgs.push(jimp.read(imagesDir + '/Portrait_' + i + '.jpg'));
+      imgs.push(Jimp.read(imagesDir + '/Portrait_' + i + '.jpg'));
     Promise.all(imgs)
       .then(loadedImgs => {
         imgs = loadedImgs;
@@ -31,18 +27,18 @@ describe('Exif', function() {
   });
 
   it('read orientation in landscape picture', () => {
-    jimp.diff(firstLandscapeImg, firstPortraitImg).percent.should.be.above(0.7);
+    Jimp.diff(firstLandscapeImg, firstPortraitImg).percent.should.be.above(0.7);
     if (isWeb('Browsers has no Exif orientation support.')) return;
     for (let i = 0; i < 8; i++) {
-      jimp.diff(firstLandscapeImg, imgs[i]).percent.should.be.below(0.1);
+      Jimp.diff(firstLandscapeImg, imgs[i]).percent.should.be.below(0.1);
     }
   });
 
   it('read orientation in portrait picture', () => {
-    jimp.diff(firstLandscapeImg, firstPortraitImg).percent.should.be.above(0.7);
+    Jimp.diff(firstLandscapeImg, firstPortraitImg).percent.should.be.above(0.7);
     if (isWeb('Browsers has no Exif orientation support.')) return;
     for (let i = 8; i < 16; i++) {
-      jimp.diff(firstPortraitImg, imgs[i]).percent.should.be.below(0.1);
+      Jimp.diff(firstPortraitImg, imgs[i]).percent.should.be.below(0.1);
     }
   });
 });
