@@ -1,4 +1,4 @@
-## 0.4.0 (2018-09-02)
+## Unreleased (2018-09-02)
 
 #### :rocket: Enhancement
 
