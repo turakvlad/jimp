@@ -1,4 +1,4 @@
-import { Jimp } from '@jimp/test-utils';
+import { Jimp } from './test-helper';
 
 // Convert [0..1] float to a percent value with only one decimal.
 const pct = n => ((n * 1000) << 0) / 10;

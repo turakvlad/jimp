@@ -5,7 +5,7 @@ import Jimp, {
   jimpEvChange
 } from '@jimp/core';
 
-export default function configure(configuration, jimpInstance = Jimp) {
+export default function configure(configuration) {
   const jimpConfig = {
     hasAlpha: {},
     encoders: {},
@@ -38,6 +38,7 @@ export default function configure(configuration, jimpInstance = Jimp) {
 
   function addPlugin(pluginModule) {
     const plugin = pluginModule(jimpEvChange) || {};
+
     if (!plugin.class && !plugin.constants) {
       // Default to class function
       addToConfig({ class: plugin });
@@ -49,26 +50,17 @@ export default function configure(configuration, jimpInstance = Jimp) {
   if (configuration.types) {
     configuration.types.forEach(addImageType);
 
-    jimpInstance.decoders = {
-      ...jimpInstance.decoders,
-      ...jimpConfig.decoders
-    };
-    jimpInstance.encoders = {
-      ...jimpInstance.encoders,
-      ...jimpConfig.encoders
-    };
-    jimpInstance.hasAlpha = {
-      ...jimpInstance.hasAlpha,
-      ...jimpConfig.hasAlpha
-    };
+    Jimp.decoders = jimpConfig.decoders;
+    Jimp.encoders = jimpConfig.encoders;
+    Jimp.hasAlpha = jimpConfig.hasAlpha;
   }
 
   if (configuration.plugins) {
     configuration.plugins.forEach(addPlugin);
   }
 
-  addJimpMethods(jimpConfig.class, jimpInstance);
-  addConstants(jimpConfig.constants, jimpInstance);
+  addJimpMethods(jimpConfig.class);
+  addConstants(jimpConfig.constants);
 
   return Jimp;
 }
